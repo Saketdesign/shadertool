@@ -19,7 +19,7 @@ export const DitherCanvas = forwardRef<DitherCanvasRef, DitherCanvasProps>(({ im
     const [gl, setGl] = useState<WebGL2RenderingContext | null>(null)
     const [program, setProgram] = useState<WebGLProgram | null>(null)
     const [texture, setTexture] = useState<WebGLTexture | null>(null)
-    const requestRef = useRef<number>()
+    const requestRef = useRef<number>(0)
     const startTimeRef = useRef<number>(Date.now())
     const mouseRef = useRef<{ x: number, y: number }>({ x: 0, y: 0 })
 
