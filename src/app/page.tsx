@@ -1,65 +1,121 @@
-import Image from "next/image";
+
+"use client"
+
+import React, { useRef, useState } from "react"
+import { ImageUpload } from "@/components/core/ImageUpload"
+import { DitherCanvas, DitherCanvasRef } from "@/components/core/DitherCanvas"
+import { ControlPanel } from "@/components/core/ControlPanel"
+import { DitherConfig, presets } from "@/types"
+import { Button } from "@/components/ui/button"
+import { Download, Share2 } from "lucide-react"
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    const [imageSrc, setImageSrc] = useState<string | null>(null)
+
+    const [config, setConfig] = useState<DitherConfig>({
+        sourceType: 'image',
+        pixelScale: 6,
+        ditherMethod: "ordered",
+        ditherAmount: 0.5,
+        render: {
+            mode: "ordered",
+            lines: 50,
+            weight: 0.5
+        },
+        palette: presets[0], // Gameboy default
+        brightness: 0.0,
+        contrast: 1.0,
+        saturation: 1.0,
+        generator: {
+            type: 'spiral',
+            speed: 1.0,
+            direction: 0,
+            scale: 10.0,
+            octaves: 4,
+            threshold: 0.5,
+            warp: 0.0
+        },
+        effects: {
+            vignette: 0.2,
+            glow: 0.0,
+            warp: 0.0,
+            mouse: 0.0
+        }
+    })
+
+    const canvasRef = useRef<DitherCanvasRef>(null)
+
+    const handleImageSelect = (file: File) => {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            setImageSrc(e.target?.result as string)
+            // Switch config to image mode if user uploads
+            setConfig(prev => ({ ...prev, sourceType: 'image' }))
+        }
+        reader.readAsDataURL(file)
+    }
+
+    const handleDownload = () => {
+        if (canvasRef.current) {
+            canvasRef.current.download("dither-shade-export.png");
+        }
+    }
+
+    return (
+        <div className="flex h-screen bg-background text-foreground overflow-hidden font-sans">
+
+            {/* Sidebar Controls */}
+            <ControlPanel config={config} setConfig={setConfig} />
+
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col relative bg-zinc-950">
+
+                {/* Header / Top Bar */}
+                <div className="h-14 border-b border-white/10 flex items-center justify-between px-6 bg-black/50 backdrop-blur-sm z-10 absolute top-0 w-full">
+                    <div className="flex items-center space-x-4">
+                        {/* Maybe breadcrumbs or status? */}
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Button variant="outline" size="sm" onClick={handleDownload} className="text-xs uppercase tracking-wider">
+                            <Download className="mr-2 h-3 w-3" /> Export
+                        </Button>
+                    </div>
+                </div>
+
+                {/* Canvas Area */}
+                <div className="flex-1 flex items-center justify-center p-8 overflow-hidden relative">
+
+                    {/* Background Grid Pattern (Aesthetic) */}
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                        style={{
+                            backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+                            backgroundSize: '40px 40px'
+                        }}
+                    />
+
+                    {(imageSrc || config.sourceType === 'generator') ? (
+                        <div className="relative shadow-2xl border border-white/10">
+                            <DitherCanvas
+                                ref={canvasRef}
+                                imageSrc={imageSrc}
+                                config={config}
+                                className="max-h-[85vh] max-w-full block" // block to remove inline spacing
+                            />
+                        </div>
+                    ) : (
+                        <div className="max-w-md w-full">
+                            <ImageUpload onImageSelect={handleImageSelect} />
+                            <div className="mt-8 text-center">
+                                <p className="text-zinc-500 text-sm mb-2">OR</p>
+                                <Button variant="outline" onClick={() => setConfig(prev => ({ ...prev, sourceType: 'generator' }))}>
+                                    Start with Generator
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+            </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    )
 }
