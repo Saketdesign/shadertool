@@ -1,47 +1,53 @@
-# Shadertool
+# shadertool
 
-> Interactive WebGL dither shader and palette studio built with Next.js, Three.js, and React Three Fiber.
+[![license: mit](https://img.shields.io/badge/license-mit-yellow.svg)](LICENSE)
+[![live demo](https://img.shields.io/badge/demo-shadertool--eight.vercel.app-blue.svg)](https://shadertool-eight.vercel.app)
+[![ci](https://github.com/Saketdesign/shadertool/actions/workflows/ci.yml/badge.svg)](https://github.com/Saketdesign/shadertool/actions/workflows/ci.yml)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Live Demo](https://img.shields.io/badge/Demo-shadertool--eight.vercel.app-blue.svg)](https://shadertool-eight.vercel.app)
-[![CI](https://github.com/Saketdesign/shadertool/actions/workflows/ci.yml/badge.svg)](https://github.com/Saketdesign/shadertool/actions/workflows/ci.yml)
+browser playground for realtime webgl dithering and custom glsl shaders.
 
-## Live Demo
+## live demo
 
-Try the interactive shader tool in your browser:  
+try the shader playground in your browser:  
 👉 **[shadertool-eight.vercel.app](https://shadertool-eight.vercel.app)**
 
-## Features
+## what it does
 
-- **Real-Time GLSL Dithering:** Interactive dithering canvas powered by Three.js and custom fragment shaders.
-- **Palette Presets:** Explore and switch color quantization palettes on the fly.
-- **Custom Image Upload:** Drop in your own imagery and see it transformed through dither filters instantly.
-- **Parameter Controls:** Sliders for threshold, pixelation density, spread, and contrast.
+- realtime glsl dithering: interactive webgl canvas powered by three.js and react three fiber
+- color palettes: switch and preview color quantization palettes on the fly
+- image upload: drop in any image to test dither filters immediately
+- controls: adjust threshold, pixelation density, spread, and contrast in realtime
 
-## Quickstart
+## quickstart
 
 ```bash
-# Clone the repository
 git clone https://github.com/Saketdesign/shadertool.git
 cd shadertool
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Tech Stack
+## build & lint
 
-- **Framework:** Next.js (App Router)
-- **3D / WebGL:** Three.js & React Three Fiber (`@react-three/fiber`, `@react-three/drei`)
-- **UI & Styling:** Tailwind CSS 4, Radix UI primitives, Lucide Icons
-- **Language:** TypeScript
+```bash
+npm run lint
+npm run build
+```
 
-## Community & Support
+## tech stack
 
-- **Issue SLA:** Bug reports, questions, and feature requests are reviewed within 24 hours.
-- **Discussions:** Ideas and shader feedback are welcome in [GitHub Discussions](https://github.com/Saketdesign/shadertool/discussions).
+- framework: next.js (app router)
+- 3d / webgl: three.js, `@react-three/fiber`, `@react-three/drei`
+- ui & styling: tailwind css 4, radix ui primitives, lucide icons
+- language: typescript
+
+## community & support
+
+- issue sla: bug reports, questions, and feature requests are reviewed within 24 hours.
+- discussions: join our [github discussions](https://github.com/Saketdesign/shadertool/discussions).
+
+## license
+
+[mit](LICENSE) © 2026 Saket Joshi

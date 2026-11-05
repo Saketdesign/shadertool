@@ -1,8 +1,8 @@
-# Contributing to Shadertool
+# contributing to shadertool
 
-Thank you for contributing!
+thanks for contributing.
 
-## Development Setup
+## development setup
 
 ```bash
 git clone https://github.com/Saketdesign/shadertool.git
@@ -11,15 +11,15 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to inspect the local app.
+open [http://localhost:3000](http://localhost:3000) to inspect the local app.
 
-Run linting and build:
+run linting and build:
 ```bash
 npm run lint
 npm run build
 ```
 
-## Guidelines
+## guidelines
 
-- Shader code and GLSL uniforms should remain performant on mobile and low-end GPUs.
-- Issues and pull requests are reviewed within 24 hours.
+- shader code and glsl uniforms should stay performant on mobile and low-end gpus.
+- issues and pull requests are reviewed within 24 hours.
